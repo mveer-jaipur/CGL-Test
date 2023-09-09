@@ -1,0 +1,45 @@
+<ng-container *ngIf="model$ | async as model">
+  <p-table
+    [columns]="model.cols"
+    [value]="model.repositories"
+    dataKey="id"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [paginator]="true"
+  >
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns" style="min-width: 20rem">
+          {{ col.header }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-repository>
+      <tr>
+        <td>
+          {{ repository.name }}
+        </td>
+        <td>
+          <img
+            [alt]="repository.owner.name"
+            [src]="repository.owner.avatar"
+            width="32"
+            style="vertical-align: middle"
+          />
+          <span class="ml-1 vertical-align-middle">{{
+            repository.owner.name
+          }}</span>
+        </td>
+        <td>
+          {{ repository.creationDate | date : "MM/dd/yyyy" }}
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="7">No repositories found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-container>
