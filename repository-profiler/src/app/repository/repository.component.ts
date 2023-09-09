@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { RepositoryService } from 'src/core/services/repository.service';
@@ -13,6 +13,7 @@ import {
   selector: 'app-repository',
   templateUrl: './repository.component.html',
   styleUrls: ['./repository.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RepositoryComponent implements OnInit {
   model$: Observable<RepositoryViewModel> = of(initialRepositoryModel);

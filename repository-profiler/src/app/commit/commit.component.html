@@ -7,6 +7,9 @@
     [showCurrentPageReport]="true"
     [rowsPerPageOptions]="[10, 25, 50]"
     [paginator]="true"
+    styleClass="p-datatable-striped"
+    [rowHover]="true"
+    [tableStyle]="{ 'min-width': '50rem' }"
   >
     <ng-template pTemplate="header" let-columns>
       <tr>

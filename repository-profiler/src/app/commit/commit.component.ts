@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { CommitService } from 'src/core/services/commit.service';
@@ -8,9 +8,11 @@ import { CommitViewModel, initializeCommitViewModel } from './commit.model';
   selector: 'app-commit',
   templateUrl: './commit.component.html',
   styleUrls: ['./commit.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommitComponent implements OnInit {
   model$: Observable<CommitViewModel> = of(initializeCommitViewModel);
+
   constructor(
     private readonly commitService: CommitService,
     private activatedRoute: ActivatedRoute
