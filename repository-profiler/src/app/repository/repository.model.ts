@@ -1,23 +1,16 @@
+import { AuthorModel } from 'src/shared/models/Author.model';
+import { Column } from 'src/shared/models/table/column.model';
+
 export interface RepositoryViewModel {
   cols: Column[];
   repositories: RepositoryModel[];
 }
 
-export interface Column {
-  field: string;
-  header: string;
-}
-
 export interface RepositoryModel {
   id: number;
   name: string;
-  owner: RepositoryOwnerModel;
+  owner: AuthorModel;
   creationDate: Date;
-}
-
-export interface RepositoryOwnerModel {
-  name: string;
-  avatar: string;
 }
 
 export const initialRepositoryModel = {

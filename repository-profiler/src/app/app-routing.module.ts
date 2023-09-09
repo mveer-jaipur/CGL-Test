@@ -8,7 +8,7 @@ const routes: Routes = [
       import('./repository/repository.module').then((m) => m.RepositoryModule),
   },
   {
-    path: 'commits',
+    path: 'repos/:repoName/commits',
     loadChildren: () =>
       import('./commit/commit.module').then((m) => m.CommitModule),
   },
