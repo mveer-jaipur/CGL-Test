@@ -15,7 +15,7 @@ export class RepositoryTransformer {
   private getCols() {
     return [
       { field: 'repoName', header: 'Repository Name' },
-      { field: 'avatar', header: 'Owner Avatar' },
+      { field: 'avatar', header: 'Owner' },
       { field: 'creationDate', header: 'Repository Creation Date' },
     ];
   }
