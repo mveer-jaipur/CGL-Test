@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { RepositoryTransformer } from 'src/app/repository/repository.transformer';
 import { RepositoryRequestModel } from 'src/shared/models/api/repository.model';
 
@@ -15,9 +15,10 @@ export class RepositoryService {
 
   getRepositories(payload: RepositoryRequestModel) {
     const queryParams = this.getQueryParams(payload);
-    return this.httpClient
-      .get(`${this.baseUrl}?${queryParams}`)
-      .pipe(map((response) => this.repositoryTransformer.transform(response)));
+    return this.httpClient.get(`${this.baseUrl}?${queryParams}`).pipe(
+      catchError(() => of(null)),
+      map((response) => this.repositoryTransformer.transform(response))
+    );
   }
 
   private getQueryParams(payload: RepositoryRequestModel) {

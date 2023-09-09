@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { CommitTransformer } from 'src/app/commit/commit.transformer';
 
 @Injectable({
@@ -16,8 +16,9 @@ export class CommitService {
 
   getCommits(repoName: string | null) {
     const params = `q=${repoName}`;
-    return this.httpClient
-      .get(`${this.baseUrl}?${params}`)
-      .pipe(map((response: any) => this.commitTransformer.transform(response)));
+    return this.httpClient.get(`${this.baseUrl}?${params}`).pipe(
+      catchError(() => of(null)),
+      map((response: any) => this.commitTransformer.transform(response))
+    );
   }
 }
