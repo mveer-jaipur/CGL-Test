@@ -18,7 +18,6 @@ export class CommitComponent implements OnInit {
 
   ngOnInit(): void {
     const repoName = this.activatedRoute.snapshot.paramMap.get('repoName');
-    console.log(repoName);
     this.model$ = this.commitService.getCommits(repoName);
   }
 }
