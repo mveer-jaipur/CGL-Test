@@ -1,98 +1,10 @@
-<p-card class="mb-2">
-  <form [formGroup]="repositoryForm">
-    <div class="flex flex-row justify-content-between">
-      <div class="flex">
-        <span class="p-float-label">
-          <input
-            pInputText
-            id="name"
-            formControlName="name"
-            class="mr-1 flex-1"
-          />
-          <label htmlFor="name">Repository Name</label>
-        </span>
-        <span class="p-float-label">
-          <input
-            pInputText
-            id="language"
-            formControlName="language"
-            class="mr-1 flex-1"
-          />
-          <label htmlFor="language">Language</label>
-        </span>
-        <p-dropdown
-          placeholder="Select order"
-          formControlName="selectedOrder"
-          [options]="orderOptions"
-          optionLabel="order"
-          class="mr-1 flex-1"
-        ></p-dropdown>
-        <p-dropdown
-          placeholder="Select Sort"
-          formControlName="selectedSort"
-          [options]="sortOptions"
-          optionLabel="sort"
-          class="mr-1 flex-1"
-        ></p-dropdown>
-      </div>
-
-      <p-button
-        label="Submit"
-        (onClick)="onSubmit()"
-        class="flex align-self-end"
-        [disabled]="!this.repositoryForm.controls['name'].value"
-      ></p-button>
-    </div>
-  </form>
-
-  <p-table
-    *ngIf="model$ | async as model"
-    [columns]="model.cols"
-    [value]="model.repositories"
-    dataKey="id"
-    [rows]="10"
-    [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[10, 25, 50]"
-    [paginator]="true"
-    styleClass="p-datatable-striped p-datatable-gridlines mt-2"
-    [rowHover]="true"
-    [tableStyle]="{ 'min-width': '50rem' }"
-  >
-    [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]"
-    [paginator]="true" styleClass="p-datatable-striped" [rowHover]="true"
-    selectionMode="single" >
-    <ng-template pTemplate="header" let-columns>
-      <tr>
-        <th *ngFor="let col of columns" style="min-width: 20rem">
-          {{ col.header }}
-        </th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-repository>
-      <tr (click)="rowSelection(repository)">
-        <td>
-          {{ repository.name }}
-        </td>
-        <td>
-          <img
-            [alt]="repository.owner.name"
-            [src]="repository.owner.avatar"
-            width="32"
-            style="vertical-align: middle; border-radius: 16px"
-          />
-          <span class="ml-1 vertical-align-middle">{{
-            repository.owner.name
-          }}</span>
-        </td>
-        <td>
-          {{ repository.creationDate | date : "MM/dd/yyyy" }}
-        </td>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="7">No repositories found.</td>
-      </tr>
-    </ng-template>
-  </p-table>
-</p-card>
+<p-progressSpinner *ngIf="isLoading" class="spinner"></p-progressSpinner>
+<ng-container *ngIf="model$ | async as model">
+  <p-card class="mb-2">
+    <app-search (searchEvent)="handleSearch($event)"></app-search>
+    <app-grid
+      [model]="model"
+      (rowSelectionEvent)="onRowSelection($event)"
+    ></app-grid>
+  </p-card>
+</ng-container>

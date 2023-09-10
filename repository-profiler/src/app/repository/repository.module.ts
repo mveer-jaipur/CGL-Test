@@ -5,9 +5,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PrimengModule } from 'src/shared/primeng.module';
 import { RepositoryRoutingModule } from './repository-routing.module';
 import { RepositoryComponent } from './repository.component';
+import { SearchComponent } from './search/search.component';
+import { GridComponent } from './grid/grid.component';
 
 @NgModule({
-  declarations: [RepositoryComponent],
+  declarations: [RepositoryComponent, SearchComponent, GridComponent],
   imports: [
     CommonModule,
     RepositoryRoutingModule,

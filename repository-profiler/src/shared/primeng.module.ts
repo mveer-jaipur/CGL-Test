@@ -3,6 +3,7 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TableModule } from 'primeng/table';
 
 @NgModule({
@@ -13,6 +14,7 @@ import { TableModule } from 'primeng/table';
     InputTextModule,
     ButtonModule,
     DropdownModule,
+    ProgressSpinnerModule,
   ],
   exports: [
     TableModule,
@@ -20,6 +22,7 @@ import { TableModule } from 'primeng/table';
     InputTextModule,
     ButtonModule,
     DropdownModule,
+    ProgressSpinnerModule,
   ],
 })
 export class PrimengModule {}

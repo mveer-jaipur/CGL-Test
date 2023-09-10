@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, of } from 'rxjs';
+import { catchError, filter, map, of, switchMap } from 'rxjs';
 import { RepositoryTransformer } from 'src/app/repository/repository.transformer';
-import { RepositoryRequestModel } from 'src/shared/models/api/repository.model';
+import { StateModel } from 'src/shared/models/state.model';
+import { StateService } from './state.service';
 
 @Injectable({ providedIn: 'root' })
 export class RepositoryService {
@@ -10,27 +11,33 @@ export class RepositoryService {
 
   constructor(
     private readonly httpClient: HttpClient,
-    private readonly repositoryTransformer: RepositoryTransformer
+    private readonly repositoryTransformer: RepositoryTransformer,
+    private readonly stateService: StateService
   ) {}
 
-  getRepositories(payload: RepositoryRequestModel) {
-    const queryParams = this.getQueryParams(payload);
-    return this.httpClient.get(`${this.baseUrl}?${queryParams}`).pipe(
-      catchError(() => of(null)),
-      map((response) => this.repositoryTransformer.transform(response))
+  getRepositories() {
+    return this.stateService.getState().pipe(
+      filter((state) => !!state),
+      switchMap((state) => {
+        const queryParams = this.getQueryParams(state);
+        return this.httpClient.get(`${this.baseUrl}?${queryParams}`).pipe(
+          catchError(() => of(null)),
+          map((response) => this.repositoryTransformer.transform(response))
+        );
+      })
     );
   }
 
-  private getQueryParams(payload: RepositoryRequestModel) {
-    const { name, ...updatedPayload } = payload;
+  private getQueryParams(state: StateModel) {
+    const { name, ...otherParams } = state;
     const query = `q=${name}`;
 
-    return Object.keys(updatedPayload ?? {}).reduce(
+    return Object.keys(otherParams ?? {}).reduce(
       (buildQuery: string, param: string) => {
         if (param === 'language') {
-          buildQuery += `+language:${payload[param]}`;
+          buildQuery += `+language:${state[param]}`;
         } else {
-          buildQuery += `&${param}=${payload[param]}`;
+          buildQuery += `&${param}=${state[param]}`;
         }
 
         return buildQuery;

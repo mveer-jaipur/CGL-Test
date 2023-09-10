@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { RepositoryService } from 'src/core/services/repository.service';
+import { StateService } from 'src/core/services/state.service';
 import { RepositoryRequestModel } from 'src/shared/models/api/repository.model';
 import {
   RepositoryModel,
@@ -16,40 +16,27 @@ import {
   styleUrls: ['./repository.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RepositoryComponent {
+export class RepositoryComponent implements OnInit {
   model$: Observable<RepositoryViewModel> = of(initialRepositoryModel);
-  orderOptions = [{ order: 'asc' }, { order: 'dsc' }];
-  sortOptions = [{ sort: 'stars' }, { sort: 'forks' }, { sort: 'updated' }];
-
-  repositoryForm = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    language: new FormControl(''),
-    selectedOrder: new FormControl(''),
-    selectedSort: new FormControl(''),
-  });
+  isLoading = true;
 
   constructor(
     private readonly repositoryService: RepositoryService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly stateService: StateService
   ) {}
 
-  rowSelection(row: RepositoryModel) {
+  ngOnInit(): void {
+    this.model$ = this.repositoryService
+      .getRepositories()
+      .pipe(tap(() => (this.isLoading = false)));
+  }
+
+  onRowSelection(row: RepositoryModel) {
     this.router.navigateByUrl(`repos/${row.name}/commits`);
   }
 
-  onSubmit() {
-    console.log(this.repositoryForm.value);
-    this.model$ = this.repositoryService.getRepositories(
-      this.getRepositoryPayload(this.repositoryForm.value)
-    );
-  }
-
-  private getRepositoryPayload(values: any): RepositoryRequestModel {
-    return {
-      name: values.name || '',
-      language: values.language || '',
-      order: values.selectedOrder.order || 'asc',
-      sort: values.selectedSort.sort || 'star',
-    };
+  handleSearch(searchCriteria: RepositoryRequestModel) {
+    this.stateService.setState(searchCriteria);
   }
 }
