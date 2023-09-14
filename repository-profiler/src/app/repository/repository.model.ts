@@ -1,23 +1,27 @@
-import { AuthorModel } from 'src/shared/models/Author.model';
-import { Column } from 'src/shared/models/table/column.model';
+import { ColumnTypeEnum } from 'src/shared/components/grid/columnEnum';
+import { ColumnModel } from 'src/shared/models/table/column.model';
 
 export interface RepositoryViewModel {
-  cols: Column[];
-  repositories: RepositoryModel[];
+  cols: ColumnModel[];
+  rows: [];
 }
 
 export interface RepositoryModel {
-  id: number;
   name: string;
-  owner: AuthorModel;
-  creationDate: Date;
+  avatar: string;
+  author: string;
+  date: string;
 }
 
 export const initialRepositoryModel = {
   cols: [
-    { field: 'repoName', header: 'Repository Name' },
-    { field: 'avatar', header: 'Owner Avatar' },
-    { field: 'creationDate', header: 'Repository Creation Date' },
+    { field: 'repoName', header: 'Repository Name', type: ColumnTypeEnum.Text },
+    { field: 'avatar', header: 'Owner Avatar', type: ColumnTypeEnum.Image },
+    {
+      field: 'creationDate',
+      header: 'Repository Creation Date',
+      type: ColumnTypeEnum.Date,
+    },
   ],
-  repositories: [],
+  rows: [],
 };

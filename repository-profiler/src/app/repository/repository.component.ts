@@ -3,12 +3,9 @@ import { Router } from '@angular/router';
 import { Observable, of, tap } from 'rxjs';
 import { RepositoryService } from 'src/core/services/repository.service';
 import { StateService } from 'src/core/services/state.service';
+import { GridModel } from 'src/shared/components/grid/grid.model';
 import { RepositoryRequestModel } from 'src/shared/models/api/repository.model';
-import {
-  RepositoryModel,
-  RepositoryViewModel,
-  initialRepositoryModel,
-} from './repository.model';
+import { RepositoryModel, initialRepositoryModel } from './repository.model';
 
 @Component({
   selector: 'app-repository',
@@ -17,7 +14,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RepositoryComponent implements OnInit {
-  model$: Observable<RepositoryViewModel> = of(initialRepositoryModel);
+  model$: Observable<GridModel<RepositoryModel>> = of(initialRepositoryModel);
   isLoading = true;
 
   constructor(

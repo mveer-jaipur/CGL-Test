@@ -1,52 +1,6 @@
 <p-progressSpinner *ngIf="isLoading" class="spinner"></p-progressSpinner>
 <ng-container *ngIf="model$ | async as model">
-  <p-table
-    [columns]="model.cols"
-    [value]="model.commits"
-    dataKey="id"
-    [rows]="7"
-    [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[7, 25, 50]"
-    [paginator]="true"
-    styleClass="p-datatable-striped p-datatable-gridlines"
-    [rowHover]="true"
-    [tableStyle]="{ 'min-width': '50rem' }"
-  >
-    <ng-template pTemplate="caption">
-      <a routerLink="/repos">Back</a>
-    </ng-template>
-    <ng-template pTemplate="header" let-columns>
-      <tr>
-        <th *ngFor="let col of columns" style="min-width: 20rem">
-          {{ col.header }}
-        </th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-commit>
-      <tr>
-        <td>
-          <img
-            [alt]="commit.author.name"
-            [src]="commit.author.avatar"
-            width="32"
-            style="vertical-align: middle; border-radius: 16px"
-          />
-          <span class="ml-1 vertical-align-middle">{{
-            commit.author.name
-          }}</span>
-        </td>
-        <td>
-          {{ commit.url }}
-        </td>
-        <td>
-          {{ commit.message }}
-        </td>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="7">No commits found.</td>
-      </tr>
-    </ng-template>
-  </p-table>
+  <p-card class="mb-2">
+    <app-grid [model]="model"></app-grid>
+  </p-card>
 </ng-container>

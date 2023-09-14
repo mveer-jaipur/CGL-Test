@@ -1,33 +1,45 @@
 import { Injectable } from '@angular/core';
-import { CommitViewModel } from './commit.model';
+import { ColumnTypeEnum } from 'src/shared/components/grid/columnEnum';
+import { GridModel } from 'src/shared/components/grid/grid.model';
+import { ColumnModel } from 'src/shared/models/table/column.model';
+import { CommitModel } from './commit.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CommitTransformer {
-  transform(response: any): CommitViewModel {
+  transform(response: any): GridModel<CommitModel> {
     return {
       cols: this.getCols(),
-      commits: this.getCommits(response),
+      rows: this.getRows(response),
+      config: this.getConfig(),
     };
   }
 
-  private getCols() {
+  private getCols(): ColumnModel[] {
     return [
-      { field: 'author', header: 'Author Name' },
-      { field: 'url', header: 'Commit URL' },
-      { field: 'message', header: 'Commit Message' },
+      { field: 'avatar', header: 'Author Name', type: ColumnTypeEnum.Image },
+      { field: 'url', header: 'Commit URL', type: ColumnTypeEnum.Text },
+      { field: 'message', header: 'Commit Message', type: ColumnTypeEnum.Text },
     ];
   }
 
-  private getCommits(response: any) {
+  private getRows(response: any): CommitModel[] {
     return response?.items.map((item: any) => ({
-      author: {
-        name: item?.author?.login,
-        avatar: item?.author?.avatar_url,
-      },
+      author: item?.author?.login,
+      avatar: item?.author?.avatar_url,
       url: item?.url,
       message: item?.commit?.message,
     }));
+  }
+
+  private getConfig() {
+    return {
+      header: {
+        isCaption: true,
+        text: 'Back',
+        urlLink: '/repos',
+      },
+    };
   }
 }

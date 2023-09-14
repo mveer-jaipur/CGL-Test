@@ -1,13 +1,13 @@
-import { AuthorModel } from 'src/shared/models/Author.model';
-import { Column } from 'src/shared/models/table/column.model';
+import { ColumnModel } from 'src/shared/models/table/column.model';
 
 export interface CommitViewModel {
-  cols: Column[];
+  cols: ColumnModel[];
   commits: CommitModel[];
 }
 
 export interface CommitModel {
-  author: AuthorModel;
+  author: string;
+  avatar: string;
   url: string;
   message: string;
 }
@@ -18,5 +18,5 @@ export const initializeCommitViewModel = {
     { field: 'url', header: 'Commit URL' },
     { field: 'message', header: 'Commit Message' },
   ],
-  commits: [],
+  rows: [],
 };

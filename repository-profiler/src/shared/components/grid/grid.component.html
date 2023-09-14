@@ -1,0 +1,78 @@
+<p-table
+  [columns]="model.cols"
+  [value]="model.rows"
+  [rowHover]="true"
+  [tableStyle]="{ 'min-width': '50rem' }"
+  scrollHeight="flex"
+  [scrollable]="true"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  [paginator]="true"
+  selectionMode="single"
+  dataKey="id"
+  styleClass="p-datatable-striped p-datatable-gridlines"
+>
+  <ng-template pTemplate="caption">
+    <a routerLink="/repos">Back</a>
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns" style="min-width: 20rem">
+        {{ col.header }}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+    <tr (click)="rowSelection($event)">
+      <td *ngFor="let col of columns; let i = index">
+        <div [ngSwitch]="col.type">
+          <ng-container
+            *ngSwitchCase="columnTypeEnum.Text"
+            [ngTemplateOutlet]="nameTemplate"
+            [ngTemplateOutletContext]="{
+              $implicit: rowData[col.field]
+            }"
+          ></ng-container>
+          <ng-container
+            *ngSwitchCase="columnTypeEnum.Image"
+            [ngTemplateOutlet]="imageTemplate"
+            [ngTemplateOutletContext]="{
+              $implicit: rowData[col.field],
+              author: rowData['author']
+            }"
+          ></ng-container>
+          <ng-container
+            *ngSwitchCase="columnTypeEnum.Date"
+            [ngTemplateOutlet]="dateTemplate"
+            [ngTemplateOutletContext]="{
+              $implicit: rowData[col.field]
+            }"
+          ></ng-container>
+          <ng-container *ngSwitchDefault>
+            {{ rowData[col.field] }}</ng-container
+          >
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="7">No repositories found.</td>
+    </tr>
+  </ng-template>
+  <ng-template #nameTemplate let-value>
+    <div>{{ value }}</div>
+  </ng-template>
+  <ng-template #imageTemplate let-value let-author="author">
+    <img
+      [alt]="value"
+      [src]="value"
+      width="32"
+      style="vertical-align: middle; border-radius: 16px"
+    />
+    <span class="ml-1 vertical-align-middle">{{ author }}</span>
+  </ng-template>
+  <ng-template #dateTemplate let-value>
+    {{ value | date : "MM/dd/yyyy" }}
+  </ng-template>
+</p-table>

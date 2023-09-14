@@ -1,12 +1,11 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { PrimengModule } from 'src/shared/primeng.module';
+import { SharedModule } from 'src/shared/shared.module';
 import { CommitRoutingModule } from './commit-routing.module';
 import { CommitComponent } from './commit.component';
 
 @NgModule({
   declarations: [CommitComponent],
-  imports: [CommonModule, CommitRoutingModule, PrimengModule],
+  imports: [CommitRoutingModule, SharedModule],
 })
 export class CommitModule {}

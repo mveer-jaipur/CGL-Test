@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of, tap } from 'rxjs';
 import { CommitService } from 'src/core/services/commit.service';
-import { CommitViewModel, initializeCommitViewModel } from './commit.model';
+import { GridModel } from 'src/shared/components/grid/grid.model';
+import { CommitModel, initializeCommitViewModel } from './commit.model';
 
 @Component({
   selector: 'app-commit',
@@ -11,7 +12,7 @@ import { CommitViewModel, initializeCommitViewModel } from './commit.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommitComponent implements OnInit {
-  model$: Observable<CommitViewModel> = of(initializeCommitViewModel);
+  model$: Observable<GridModel<CommitModel>> = of(initializeCommitViewModel);
   isLoading = true;
 
   constructor(
